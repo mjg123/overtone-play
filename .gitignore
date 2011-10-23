@@ -1,0 +1,11 @@
+pom.xml
+*jar
+/lib/
+/classes/
+.lein-failures
+.lein-deps-sum
+
+*#
+*~
+.#*
+hs_err*.log
