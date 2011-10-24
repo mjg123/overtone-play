@@ -6,12 +6,14 @@
 (zero-conf-on)
 
 ;; connect from phone, then
-(zero-conf-off)
 (osc-listen server (fn [msg] (println msg)) :debug)
+(zero-conf-off)
 
 ;; if you want to, remove that listener
 (osc-rm-listener server :debug)
 
+;; all done?
+(osc-close server)
 
 ;; we've a simple instrument available from another ns
 (bing 70)
