@@ -9,6 +9,9 @@
 (osc-listen server (fn [msg] (println msg)) :debug)
 (zero-conf-off)
 
+(comment "could also do:"
+	 (osc-listen server println :debug))
+
 ;; if you want to, remove that listener
 (osc-rm-listener server :debug)
 

@@ -59,14 +59,35 @@
 
 (stop)
 
+(def h-bus (audio-bus 2))
+
+(defsynth master-out [amp 1 pan 0]
+  (let [src (in h-bus 2)]
+    (out 0 (pan2 src)))
+
+(def master (master-out))
+(kill master)
+
+(defsynth compressor-demo [in-bus 10]
+  (let [source (in in-bus)]
+    (out 0 (pan2 (compander source source (mouse-y:kr 0.0 1) 1 0.5 0.01 0.01)))))
+
+(bizzle b)
+(compressor-demo h-bus)
+
+(stop)
 
 ;; -------------------- score -------------------------
 
+(def metro (metronome 256))
+
+(def hh-out h-bus)
+
 (defn ply-rp [b r]
-  (at (metro (+ 0 b)) (happy-harpy 0 1 r 8))
-  (at (metro (+ 2 b)) (happy-harpy 0 1 (+ 3 r) 4))
-  (at (metro (+ 4 b)) (happy-harpy 0 1 (+ 7 r) 4))
-  (at (metro (+ 6 b)) (happy-harpy 0 1 (+ 10 r) 4)))
+  (at (metro (+ 0 b)) (happy-harpy hh-out 1 r 16))
+  (at (metro (+ 2 b)) (happy-harpy hh-out 1 (+ 3 r) 4))
+  (at (metro (+ 4 b)) (happy-harpy hh-out 1 (+ 7 r) 4))
+  (at (metro (+ 6 b)) (happy-harpy hh-out 1 (+ 10 r) 4)))
 
 (defn arp-seq [b]
   (ply-rp b 72)
@@ -75,14 +96,14 @@
   (ply-rp (+ 24 b) 77))
 
 (defn trk [b]
-  (cloudy 0 2 (* 8 880) 1)
+; (cloudy 0 2 (* 8 880) 1)
   (arp-seq (+ b 0))
   (arp-seq (+ b 32)))
 
-(def metro (metronome 256))
 (trk (metro))
 (stop)
 
-(hh 0 1 34 8)
-(arp-seq (metro))
-
+(osc-handle server "/2/push1"
+	    (fn [{[v] :args}]
+	      (when (< 0 v)
+		(trk (metro)))))
