@@ -1,5 +1,7 @@
 (ns tutorial.pieces.p01
-  (:use [overtone.live]))
+  (:use [overtone.live])
+  (:use [overtone.viz.scope])
+  )
 
 ;; ----------------- patchbay -----------------
 
@@ -54,8 +56,11 @@
     
     (out out-bus [snd (* -1 snd)])))
 
-(def n (happy-harpy 0 1 72 5))
+(def n (happy-harpy 0 1 75 5))
 (kill n)
+
+(scope-on)
+
 
 (stop)
 
@@ -72,9 +77,6 @@
   (let [source (in in-bus)]
     (out 0 (pan2 (compander source source (mouse-y:kr 0.0 1) 1 0.5 0.01 0.01)))))
 
-(bizzle b)
-(compressor-demo h-bus)
-
 (stop)
 
 ;; -------------------- score -------------------------
@@ -84,10 +86,10 @@
 (def hh-out h-bus)
 
 (defn ply-rp [b r]
-  (at (metro (+ 0 b)) (happy-harpy hh-out 1 r 16))
-  (at (metro (+ 2 b)) (happy-harpy hh-out 1 (+ 3 r) 4))
-  (at (metro (+ 4 b)) (happy-harpy hh-out 1 (+ 7 r) 4))
-  (at (metro (+ 6 b)) (happy-harpy hh-out 1 (+ 10 r) 4)))
+  (at (metro (+ 0 b)) (happy-harpy 0 1 r 16))
+  (at (metro (+ 2 b)) (happy-harpy 0 1 (+ 3 r) 4))
+  (at (metro (+ 4 b)) (happy-harpy 0 1 (+ 7 r) 4))
+  (at (metro (+ 6 b)) (happy-harpy 0 1 (+ 10 r) 4)))
 
 (defn arp-seq [b]
   (ply-rp b 72)
@@ -102,6 +104,8 @@
 
 (trk (metro))
 (stop)
+
+(ply-rp (metro) 79)
 
 (osc-handle server "/2/push1"
 	    (fn [{[v] :args}]
