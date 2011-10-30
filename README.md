@@ -6,3 +6,7 @@ Me, playing with overtone &c.
 
 lein deps; lein swank
 open emacs & play
+
+## Useful
+
+http://supercollider.svn.sourceforge.net/viewvc/supercollider/trunk/common/build/Help/UGens/Tour_of_UGens.html

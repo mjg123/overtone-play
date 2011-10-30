@@ -23,6 +23,7 @@
 
 ;; add listeners for the piano screeny thing
 (for [x (range 1 13)]
+
   (osc-handle server (str "/1/push" x)
 	      (fn [{[io] :args}]
 		(when (< 0 io)
